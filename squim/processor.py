@@ -9,7 +9,6 @@ from typing import Dict, Optional
 METRICS = ('STOI', 'PESQ', 'SI-SDR')
 
 class SquimProcessor:
-    '''Class '''
     def __init__(self, model_path: Optional[str] = None, sr: int = 16000):
         '''Constructor for SquimProcessor
         
@@ -23,6 +22,9 @@ class SquimProcessor:
         else:
             self.model = bundle.get_model()
             self.target_sr = bundle.sample_rate
+
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.model = self.model.to(self.device)
 
     def _load_model_from_path(self, model_path: str) -> SquimObjective:
         '''Load model from an absolute path.
@@ -54,13 +56,13 @@ class SquimProcessor:
         # resample audio to expected sample rate
         waveform = torchaudio.functional.resample(waveform, sr, self.target_sr)
 
-        return waveform
+        return waveform.to(self.device)
 
     def estimate(self, waveform: torch.Tensor) -> Dict[str, float]:
         '''Generate the SQUIM estimates of the waveform.
 
         Args:
-            waveform (torch.Tensor): waveform as a tensor of shape (channels, num_samples)
+            waveform (torch.Tensor): waveform as a tensor of shape (batch_size, num_samples)
         
         Returns:
             Dict[str, float]: dictionary containing the estimates for each metric.

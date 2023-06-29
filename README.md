@@ -9,17 +9,19 @@ This is an usage implementation of [TorchAudio-SQUIM](https://ieeexplore.ieee.or
 ## Install
 Note: TorchAudio-SQUIM is still in development, and only available in [TorchAudio's main branch](https://pytorch.org/audio/main/prototype.pipelines.html#squim-objective). You will have to install the preview (nightly) build to use it. Run the command below to install the nightly build for CUDA 11.8 using pip, or head over to [pytorch.org](https://pytorch.org/) for other versions.
 
-```bash
+```shell
 # CUDA 11.8 nightly build
->>> pip3 install --pre torch torchaudio --index-url https://download.pytorch.org/whl/nightly/cu118
+pip3 install --pre torch torchaudio --index-url https://download.pytorch.org/whl/nightly/cu118
 # for Gradio demo
->>> pip3 install gradio
+pip3 install gradio
+# Clone repository
+git clone https://github.com/test-dan-run/squim-report.git
 ```
 
 ## How to Use
 For a single file.
-```bash
->>> python3 infer.py <path-to-audio-file>
+```shell
+python3 infer.py <path-to-audio-file>
 # [test.wav] SQUIM scores: {'STOI': 0.677, 'PESQ': 1.194, 'SI-SDR': -1.396}
 ```
 

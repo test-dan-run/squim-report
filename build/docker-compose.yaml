@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  notebook:
+    image: squim-report:latest
+    stdin_open: true
+    tty: true
+    ulimits:
+      memlock: -1 # set upper limit for how much memory is locked for the container (-1 means lock as much as the container uses)
+    ports:
+      - 8888:8888
+    volumes:
+      - /mnt/d/projects/squim-report:/workspace
+      - /mnt/d/datasets/NOIZEUS:/data
+    deploy:
+          resources:
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: 1
+                  capabilities: [gpu]
+    command: jupyter notebook --allow-root --ip 0.0.0.0
+
+  demo:
+    image: squim-report:latest
+    stdin_open: true
+    tty: true
+    ulimits:
+      memlock: -1 # set upper limit for how much memory is locked for the container (-1 means lock as much as the container uses)
+    ports:
+      - 8080:8080
+    volumes:
+      - /mnt/d/projects/squim-report:/workspace
+    deploy:
+          resources:
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: 1
+                  capabilities: [gpu]
+    command: python3 demo.py

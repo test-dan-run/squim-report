@@ -1,0 +1,5 @@
+gradio==3.35.2
+notebook==6.5.4
+
+librosa==0.10.0.post2
+soundfile==0.12.1

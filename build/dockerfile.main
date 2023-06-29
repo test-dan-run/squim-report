@@ -1,0 +1,24 @@
+# docker build -f build/dockerfile.main -t squim-report:latest .
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu20.04
+
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONFAULTHANDLER 1
+ENV TZ=Asia/Singapore
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get install --no-install-recommends -y gcc g++ libsndfile1 ffmpeg sox wget git vim python3-pip && \
+    apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* && apt-get -y autoremove && \
+    rm -rf /var/cache/apt/archives/
+
+ADD ./build/requirements.txt .
+
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    python3 -m pip install --no-cache-dir --pre torch torchaudio --index-url https://download.pytorch.org/whl/nightly/cu118 && \
+    python3 -m pip install --no-cache-dir -r requirements.txt
+
+WORKDIR /workspace

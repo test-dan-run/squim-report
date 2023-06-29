@@ -8,7 +8,7 @@ def estimate(audio_filepath: str) -> Tuple[str]:
 
     estimates = processor.estimate(audio_filepath)
 
-    return estimates
+    return estimates[0]
 
 if __name__ == '__main__':
 

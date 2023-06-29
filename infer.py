@@ -6,8 +6,7 @@ processor = SquimProcessor()
 
 def estimate(audio_filepath: str) -> Tuple[str]:
 
-    waveform = processor.load_audio(audio_filepath)
-    estimates = processor.estimate(waveform)
+    estimates = processor.estimate(audio_filepath)
 
     return estimates
 
